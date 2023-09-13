@@ -2,7 +2,7 @@ const fs = require('fs')
 class ProductManager {
 
     constructor() {
-        this.path = "./inventario.json"
+        this.path = "../inventario.json"
     }
 
     async getProducts() {
@@ -25,7 +25,8 @@ class ProductManager {
             price,
             thumbnail,
             code,
-            stock
+            stock,
+            status: true
         }
 
         const products = await this.getProducts();
@@ -61,7 +62,7 @@ class ProductManager {
         }
     }
 
-    async updateProduct(id,title, description, price, thumbnail, code, stock) {
+    async updateProduct(id,title, description, price, thumbnail, code, stock, status) {
         const lista = await this.getProducts();
         const buscamosPorId = lista.find((producto) => producto.id === id)
         if (buscamosPorId) {
@@ -73,13 +74,13 @@ class ProductManager {
                 price,
                 thumbnail,
                 code,
-                stock
+                stock,
+                status
             }
 
             const listaFiltrada = lista.filter((prod) => prod.id !== id);
             await fs.promises.writeFile(this.path, JSON.stringify([...listaFiltrada, productoActualizado]));
             console.log('Producto actualizado')
-
 
         } else {
             console.log("Producto no encontrado")
